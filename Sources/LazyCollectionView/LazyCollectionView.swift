@@ -50,7 +50,8 @@ where Data: RandomAccessCollection & Equatable,
             let attributes = layout.layoutAttributesForElements(in: visibleRect)
             ZStack {
                 ForEach(attributes) { attributes in
-                    if attributes.index < data.count, let element = data[attributes.index] {
+                    if attributes.index < data.count {
+                        let element = data[attributes.index]
                         content(element)
                             .frame(width: attributes.frame.size.width, height: attributes.frame.size.height)
                             .position(CGPoint(x: attributes.frame.midX, y: attributes.frame.midY))
