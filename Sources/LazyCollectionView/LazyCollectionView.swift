@@ -63,10 +63,22 @@ where Data: RandomAccessCollection & Equatable,
                 layout.setParentSize(proxy.size)
                 layout.prepare(withData: data)
             }
+            #if os(visionOS)
+            .onChange(of: self.parentFrame) { oldValue, newValue in
+                onParentFrameChanged(newValue)
+            }
+            #else
             .onChange(of: self.parentFrame, perform: onParentFrameChanged(_:))
+            #endif
         }
         .frame(width: width, height: height)
+        #if os(visionOS)
+        .onChange(of: data) { _, newValue in
+            onDataChanged(newValue)
+        }
+        #else
         .onChange(of: data, perform: onDataChanged(_:))
+        #endif
     }
 
     private func onParentFrameChanged(_ newValue: CGRect?) {
